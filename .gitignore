@@ -1,0 +1,55 @@
+# Env & caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Data — never commit
+data/
+*.fastq
+*.fq
+*.fasta
+*.fa
+*.sam
+*.bam
+*.bai
+*.cram
+*.vcf
+*.gz
+*.bgz
+*.tbi
+*.bed
+*.gff
+*.gtf
+*.csv
+*.tsv
+*.parquet
+*.h5
+*.db
+*.sqlite*
+
+# Secrets
+.env
+*.key
+*.pem
+credentials*
+
+# AI tooling
+CLAUDE.md
+.claude/
+.cursor/
+.cursorrules
+.aider*
+.continue/
+.github/copilot-instructions.md
+
+# Notes (live outside the repo — belt and braces)
+working.md
+notes/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
