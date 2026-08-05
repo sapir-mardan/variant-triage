@@ -7,7 +7,8 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Data — never commit
-data/
+data/*
+!data/PROVENANCE.md
 *.fastq
 *.fq
 *.fasta
@@ -53,3 +54,6 @@ notes/
 .DS_Store
 .vscode/
 .idea/
+
+# temp files
+scratch.py
