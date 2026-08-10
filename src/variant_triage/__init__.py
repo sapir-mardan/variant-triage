@@ -1,2 +1,2 @@
-def main() -> None:
-    print("Hello from variant-triage!")
+from .fastq import main
+#main is reachable to the package from variant_triage

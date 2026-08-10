@@ -48,3 +48,6 @@ def test_gc_content_case_insensitive(tmp_path, seq, expected_gc):
     f.write_text(f"@r1\n{seq}\n+\n{'I' * len(seq)}\n")
     result = qc_summary(f)
     assert result["gc_content"] == expected_gc
+
+def test_lenght_plot_runs():
+    pass
