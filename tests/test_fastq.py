@@ -1,5 +1,6 @@
 import pytest
-from variant_triage.fastq import count_records, validate_record, qc_summary
+import pandas as pd
+from variant_triage.fastq import count_records, validate_record, qc_summary, read_stats
 
 def test_count_records(tmp_path):
     f = tmp_path / "tiny.fastq"
@@ -49,5 +50,8 @@ def test_gc_content_case_insensitive(tmp_path, seq, expected_gc):
     result = qc_summary(f)
     assert result["gc_content"] == expected_gc
 
-def test_lenght_plot_runs():
-    pass
+def test_read_stats_runs_with_empty_file(tmp_path):
+    f = tmp_path / "empty.fastq"
+    f.write_text("")
+    df = read_stats(f)
+    assert len(df) == 0

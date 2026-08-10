@@ -79,7 +79,7 @@ def qc_summary(path) -> dict:
     return qc_summary_stats
 
 def read_stats(path):
-    #returns a dataframe of: lengths, gc content
+    #returns a dataframe of: lengths, gc content per each sequence 
     with open(path, 'r') as file:
         rows = []
         for record in itertools.batched(file, 4):
@@ -92,6 +92,9 @@ def read_stats(path):
                     g_content += 1
                 elif bp == "c":
                     c_content += 1
+
+            if length_record == 0:
+                gc_content == None #as 0% value has a meaning, None means - no record. 
             gc_content = round(((g_content + c_content) *100 / length_record), 3)
 
             #add the stats as doctionary to rows
@@ -116,26 +119,23 @@ def plot_length_distribution(df):
     plt.savefig("plots/length_distribution.png")
     plt.close()
 
-
-
 def main():
+    #1. define argparse path from cl
     parser = argparse.ArgumentParser(description="Count FASTQ records")
     parser.add_argument("path", help="Path to fastq file")
     #when running the python file, calling the function, the first argument
     #will be the path (from the CL)
     args = parser.parse_args()
     path = args.path
-    
-    #now I can call a function with the argument from argparse:
+    #now I can call a function with the argument "path" from argparse.
 
-    #validate_fastq_assume_starts_with_at(path)
-    #validate_fastq_assume_4_lines_record(path)
-    #print(f"number of records:{count_records(path)}")
-    #print(f"broken records:{validate_fastq_batched(path)}")
+    #2. validate records
+    broken_records = validate_fastq_batched(path)
+    if broken_records:
+        print(f"{len(broken_records)} broken records were found") 
+    #3. read stats and save plots
     print(qc_summary(path))
     df = read_stats(path)
-    #print(df.head())
-    #print(df.describe())
     plot_gc_content(df)
     plot_length_distribution(df)
 
