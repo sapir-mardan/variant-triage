@@ -26,3 +26,47 @@ time and were reconstructed afterward. The sequence above is verified to reprodu
 the tracked file exactly (10,000 records, confirmed via `count_records`). Source
 accession and organism are certain; the literal command syntax used originally may
 have differed slightly (e.g. gunzip as a separate step vs. piped).
+
+
+---
+
+## Stage B: Alignment and Variant Calling
+
+### Reference Genome
+- **Organism/strain:** *E. coli* B str. REL606
+- **Assembly:** GCF_000017985.1 (ASM1798v1)
+- **File:** `data/reference/REL606.fasta`
+
+### Alignment (Stage 2)
+```bash
+bwa mem -R '@RG\tID:E.coli_LTEE\tSM:ecoli_LTEE' \
+  data/reference/REL606.fasta \
+  data/SRR2589044_1.subset.fastq \
+  > data/aligned.sam
+```
+Result: 9,991/10,000 reads mapped (99.91%)
+
+### Sorting & Indexing (Stage 3)
+```bash
+samtools sort -o data/aligned.sorted.bam data/aligned.sam
+samtools index data/aligned.sorted.bam
+```
+
+### Variant Calling (Stage 4)
+
+**bcftools:**
+```bash
+bcftools mpileup -f data/reference/REL606.fasta data/aligned.sorted.bam | bcftools call -mv -o data/calls.vcf
+```
+Result: 178 variants
+
+**GATK:**
+```bash
+gatk HaplotypeCaller -R data/reference/REL606.fasta -I data/aligned.sorted.bam -O data/calls_gatk.vcf
+```
+Result: 2 variants (DP≥3, high confidence)
+
+### Comparison
+- bcftools: 178 variants (including many DP=1 calls with low confidence)
+- GATK: 2 variants (high-confidence only, filtered stringently)
+- Reason: Shallow coverage (0.002x) makes GATK's filtering appropriate
