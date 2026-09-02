@@ -57,3 +57,7 @@ notes/
 
 # temp files
 scratch.py
+
+# Results — small, keep these visible
+!data/calls_pe.vcf
+!data/calls_gatk_pe.vcf
