@@ -59,5 +59,8 @@ notes/
 scratch.py
 
 # Results — small, keep these visible
-!data/calls_pe.vcf
-!data/calls_gatk_pe.vcf
+!data/03_results/
+!data/03_results/*
+data/03_results/*
+!data/03_results/calls_pe.vcf
+!data/03_results/calls_gatk_pe.vcf
